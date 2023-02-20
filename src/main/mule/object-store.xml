@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="24446af6-643b-4a52-832a-51544dcd95c0" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<os:object-store name="Object_store" doc:name="Object store" doc:id="343e967c-0e44-4651-bc0b-14f8115c135f" />
+	<os:object-store name="Object_store1" doc:name="Object store" doc:id="11b2fad5-923b-466e-bf28-fc3cd6e285ef" />
+	<flow name="object-storeFlow" doc:id="f2ab3af3-134e-4f03-808a-b61a9377af1d" >
+		<http:listener doc:name="Listener" doc:id="5d60a27f-9573-424c-9b8c-4fbe2d31cfd8" config-ref="HTTP_Listener_config" path="/object"/>
+		<os:store doc:name="Store" doc:id="a5c75aaf-71e7-4b3c-a08b-48e7d526ee22" key="lookup" objectStore="Object_store">
+			<os:value ><![CDATA[#["welcome to Sahakar soft"]]]></os:value>
+		</os:store>
+	</flow>
+	<flow name="object-storeFlow1" doc:id="7dbe8412-3e83-4496-be8c-d80ac7cd0d10" >
+		<http:listener doc:name="Listener" doc:id="1a481492-7652-48f2-9d65-e1a48f2c0c52" config-ref="HTTP_Listener_config" path="/object1"/>
+		<os:retrieve doc:name="Retrieve" doc:id="039675cd-337a-4d6a-be87-f7b2168bf85b" key="lookup" objectStore="Object_store">
+			<os:default-value ><![CDATA[""]]></os:default-value>
+		</os:retrieve>
+		<logger level="INFO" doc:name="Logger" doc:id="a2994fe3-e153-4c25-8f5a-2a997b53e8fc" message="#[payload]"/>
+	</flow>
+</mule>
